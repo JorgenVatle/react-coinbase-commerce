@@ -14,6 +14,7 @@ type Props = {
   onLoad: () => void,
   onChargeSuccess: (MessageData) => void,
   onChargeFailure: (MessageData) => void,
+  onPaymentDetected: (MessageData) => void,
   onError: (MessageData) => void,
   onModalClose: () => void
 };
@@ -121,7 +122,7 @@ export default class IFrame extends React.Component<Props, State> {
       return;
     }
 
-    const {onChargeSuccess, onChargeFailure, onModalClose, onError} = this.props;
+    const {onChargeSuccess, onChargeFailure, onModalClose, onError, onPaymentDetected} = this.props;
 
     switch (msg.data.event) {
       case 'charge_confirmed':
@@ -130,6 +131,8 @@ export default class IFrame extends React.Component<Props, State> {
       case 'charge_failed':
         onChargeFailure && onChargeFailure(msg.data);
         break;
+      case 'payment_detected':
+        onPaymentDetected && onPaymentDetected(msg.data);
       case 'error_not_found':
         onError(msg.data);
         break;
